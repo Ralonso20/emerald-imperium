@@ -45,6 +45,7 @@
 #include "mystery_gift.h"
 #include "union_room_chat.h"
 #include "constants/items.h"
+#include "constants/species.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -52,6 +53,19 @@ static void ClearFrontierRecord(void);
 static void WarpToTruck(void);
 static void ResetMiniGamesRecords(void);
 static void ResetItemFlags(void);
+static void InitTestPokemonBox(void);
+
+static const u16 sTestBoxSpecies[] =
+{
+    SPECIES_FLYGON,
+    SPECIES_NOIVERN,
+    SPECIES_WEAVILE,
+    SPECIES_SWELLOW,
+    SPECIES_FLAREON,
+};
+
+// Ability slot used by each test Pokemon above (0/1 regular, 2 hidden).
+static const u8 sTestBoxAbilityNums[] = { 1, 2, 2, 1, 1 };
 
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
 EWRAM_DATA bool8 gEnableContestDebugging = FALSE;
@@ -182,6 +196,7 @@ void NewGameInitData(void)
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
+    InitTestPokemonBox();
     DeactivateAllRoamers();
     gSaveBlock1Ptr->registeredItem = ITEM_NONE;
     ClearBag();
@@ -206,6 +221,22 @@ void NewGameInitData(void)
     ResetTrainerHillResults();
     ResetContestLinkResults();
     ResetItemFlags();
+}
+
+static void InitTestPokemonBox(void)
+{
+    u32 i;
+
+    StringCopy(GetBoxNamePtr(0), _("TEST"));
+    for (i = 0; i < ARRAY_COUNT(sTestBoxSpecies); i++)
+    {
+        struct BoxPokemon *boxMon;
+
+        CreateBoxMonAt(0, i, sTestBoxSpecies[i], 50, MAX_PER_STAT_IVS,
+                       FALSE, 0, OT_ID_PLAYER_ID, 0);
+        boxMon = GetBoxedMonPtr(0, i);
+        SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &sTestBoxAbilityNums[i]);
+    }
 }
 
 static void ResetMiniGamesRecords(void)

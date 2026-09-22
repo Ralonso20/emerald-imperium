@@ -2408,4 +2408,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .cantBeSwapped = TRUE,
         .cantBeTraced = TRUE,
     },
+
+    [ABILITY_FLAREATE] =
+    {
+        .name = _("Flareate"),
+        .description = COMPOUND_STRING("Normal moves become Fire\nand gain power."),
+        .aiRating = 8,
+    },
 };
