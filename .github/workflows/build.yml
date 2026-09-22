@@ -38,6 +38,15 @@ jobs:
             libpng-dev \
             libelf-dev
 
+      - name: Preserve committed Poryscript output
+        run: |
+          find data -name '*.pory' -print0 | while IFS= read -r -d '' source; do
+            generated="${source%.pory}.inc"
+            if [[ -f "$generated" ]]; then
+              touch "$generated"
+            fi
+          done
+
       - name: Build ROM
         run: make -j"$(nproc)" -O all
 
