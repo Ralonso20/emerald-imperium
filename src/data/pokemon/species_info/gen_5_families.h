@@ -198,10 +198,10 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
     [SPECIES_SERPERIOR] =
     {
         .baseHP        = 75,
-        .baseAttack    = 75,
+        .baseAttack    = 60,
         .baseDefense   = 95,
         .baseSpeed     = 113,
-        .baseSpAttack  = 75,
+        .baseSpAttack  = 90,
         .baseSpDefense = 95,
         .types = MON_TYPES(TYPE_GRASS),
         .catchRate = 45,
@@ -5878,10 +5878,10 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
     [SPECIES_ZOROARK] =
     {
         .baseHP        = 60,
-        .baseAttack    = 105,
+        .baseAttack    = 120,
         .baseDefense   = 60,
         .baseSpeed     = 105,
-        .baseSpAttack  = 120,
+        .baseSpAttack  = 85,
         .baseSpDefense = 60,
         .types = MON_TYPES(TYPE_DARK),
         .catchRate = 45,
@@ -10253,12 +10253,12 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
 #if P_HISUIAN_FORMS
     [SPECIES_BRAVIARY_HISUI] =
     {
-        .baseHP        = 115,
-        .baseAttack    = 58,
-        .baseDefense   = 80,
-        .baseSpeed     = 65,
+        .baseHP        = 110,
+        .baseAttack    = 63,
+        .baseDefense   = 70,
+        .baseSpeed     = 85,
         .baseSpAttack  = 112,
-        .baseSpDefense = 80,
+        .baseSpDefense = 70,
         .types = MON_TYPES(TYPE_PSYCHIC, TYPE_FLYING),
         .catchRate = 60,
         .expYield = 179,

@@ -820,6 +820,7 @@ struct BattleStruct
     u8 intrepidSwordBoost[NUM_BATTLE_SIDES];
     u8 dauntlessShieldBoost[NUM_BATTLE_SIDES];
     u8 supersweetSyrup[NUM_BATTLE_SIDES];
+    u16 illusionShieldUsed; // One bit per party slot and side.
     u8 supremeOverlordCounter[MAX_BATTLERS_COUNT];
     u8 quickClawRandom[MAX_BATTLERS_COUNT];
     u8 quickDrawRandom[MAX_BATTLERS_COUNT];
@@ -1213,4 +1214,3 @@ static inline bool32 IsDoubleBattle(void)
 }
 
 #endif // GUARD_BATTLE_H
-

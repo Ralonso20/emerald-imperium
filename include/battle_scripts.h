@@ -337,6 +337,7 @@ extern const u8 BattleScript_SelectingNotAllowedStuffCheeksInPalace[];
 extern const u8 BattleScript_SelectingNotAllowedBelch[];
 extern const u8 BattleScript_SelectingNotAllowedBelchInPalace[];
 extern const u8 BattleScript_PsychicSurgeActivates[];
+extern const u8 BattleScript_DistortedSpaceActivates[];
 extern const u8 BattleScript_GrassySurgeActivates[];
 extern const u8 BattleScript_MistySurgeActivates[];
 extern const u8 BattleScript_ElectricSurgeActivates[];

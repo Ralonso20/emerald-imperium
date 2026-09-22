@@ -421,7 +421,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_TRUANT] =
     {
         .name = _("Truant"),
-        .description = COMPOUND_STRING("Moves only every two turns."),
+        .description = COMPOUND_STRING("Damaging moves have a 30%\nchance to fail."),
         .aiRating = -2,
         .cantBeOverwritten = TRUE,
     },
@@ -1126,7 +1126,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ILLUSION] =
     {
         .name = _("Illusion"),
-        .description = COMPOUND_STRING("Enters disguised and deals\n30% more damage."),
+        .description = COMPOUND_STRING("Disguises itself; first full-HP\nhit deals half damage."),
         .aiRating = 8,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2515,6 +2515,27 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Bone Zone"),
         .description = COMPOUND_STRING("Bone moves ignore\nimmunities and resistances."),
         .aiRating = 7,
+    },
+
+    [ABILITY_FLAREATE] =
+    {
+        .name = _("Flareate"),
+        .description = COMPOUND_STRING("Normal moves become Fire\n& boosted by 20%."),
+        .aiRating = 8,
+    },
+
+    [ABILITY_BLAZING_MOMENTUM] =
+    {
+        .name = _("Blazing Momentum"),
+        .description = COMPOUND_STRING("Boosts Speed after knocking\nout a Pokémon."),
+        .aiRating = 7,
+    },
+
+    [ABILITY_DISTORTED_SPACE] =
+    {
+        .name = _("Distorted Space"),
+        .description = COMPOUND_STRING("Sets Trick Room upon\nentering battle."),
+        .aiRating = 8,
     },
 
     

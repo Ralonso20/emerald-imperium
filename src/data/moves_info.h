@@ -20709,6 +20709,23 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .battleAnimScript = gBattleAnimMove_MalignantChain,
     },
 
+    [MOVE_EVOLUTION_BOOST] =
+    {
+        .name = COMPOUND_STRING("Evolution Boost"),
+        .description = COMPOUND_STRING(
+            "Sharply raises Attack, Defense,\n"
+            "Sp. Atk, Sp. Def, and Speed."),
+        .effect = EFFECT_EXTREME_EVOBOOST,
+        .power = 0,
+        .type = TYPE_NORMAL,
+        .accuracy = 0,
+        .pp = 1,
+        .target = MOVE_TARGET_USER,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_STATUS,
+        .battleAnimScript = gBattleAnimMove_ExtremeEvoboost,
+    },
+
     // Z-Moves
     [MOVE_BREAKNECK_BLITZ] =
     {

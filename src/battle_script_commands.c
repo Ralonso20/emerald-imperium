@@ -2193,6 +2193,15 @@ static void Cmd_adjustdamage(void)
         // Form change will be done after attack animation in Cmd_resultmessage.
         goto END;
     }
+    if (GetBattlerAbility(gBattlerTarget) == ABILITY_ILLUSION
+     && gBattleMoveDamage > 0
+     && BATTLER_MAX_HP(gBattlerTarget)
+     && !(gBattleStruct->illusionShieldUsed & (1u << (GetBattlerSide(gBattlerTarget) * PARTY_SIZE + gBattlerPartyIndexes[gBattlerTarget]))))
+    {
+        gBattleMoveDamage = max(1, gBattleMoveDamage / 2);
+        gBattleStruct->illusionShieldUsed |= 1u << (GetBattlerSide(gBattlerTarget) * PARTY_SIZE + gBattlerPartyIndexes[gBattlerTarget]);
+        RecordAbilityBattle(gBattlerTarget, ABILITY_ILLUSION);
+    }
     if (gBattleMons[gBattlerTarget].hp > gBattleMoveDamage)
         goto END;
 
@@ -10012,20 +10021,22 @@ static void Cmd_various(void)
         }
         break;
     }
-    case VARIOUS_TRY_ACTIVATE_GRIM_NEIGH:   // and as one shadow rider
+    case VARIOUS_TRY_ACTIVATE_GRIM_NEIGH:   // and as one shadow rider / Blazing Momentum
     {
         VARIOUS_ARGS();
 
         u16 battlerAbility = GetBattlerAbility(battler);
 
         if ((battlerAbility == ABILITY_GRIM_NEIGH
+         || battlerAbility == ABILITY_BLAZING_MOMENTUM
          || battlerAbility == ABILITY_AS_ONE_SHADOW_RIDER)
           && HasAttackerFaintedTarget()
           && !NoAliveMonsForEitherParty()
-          && CompareStat(gBattlerAttacker, STAT_SPATK, MAX_STAT_STAGE, CMP_LESS_THAN))
+          && CompareStat(gBattlerAttacker, battlerAbility == ABILITY_BLAZING_MOMENTUM ? STAT_SPEED : STAT_SPATK, MAX_STAT_STAGE, CMP_LESS_THAN))
         {
-            SET_STATCHANGER(STAT_SPATK, 1, FALSE);
-            PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_SPATK);
+            u32 statId = battlerAbility == ABILITY_BLAZING_MOMENTUM ? STAT_SPEED : STAT_SPATK;
+            SET_STATCHANGER(statId, 1, FALSE);
+            PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
             BattleScriptPush(cmd->nextInstr);
             gLastUsedAbility = battlerAbility;
             if (battlerAbility == ABILITY_AS_ONE_SHADOW_RIDER)

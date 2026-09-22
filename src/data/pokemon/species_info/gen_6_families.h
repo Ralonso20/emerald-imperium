@@ -5355,7 +5355,7 @@ const struct SpeciesInfo gSpeciesInfoGen6[] =
     #else
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FLYING),
     #endif
-        .abilities = {    ABILITY_FRISK,   ABILITY_INFILTRATOR,   ABILITY_TELEPATHY   },
+        .abilities = {    ABILITY_FRISK,   ABILITY_INFILTRATOR,   ABILITY_AERILATE   },
         .bodyColor = BODY_COLOR_PURPLE,
         .speciesName = _("Noivern"),
         .cryId = CRY_NOIVERN,
