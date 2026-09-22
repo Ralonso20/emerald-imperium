@@ -1,11 +1,19 @@
-name: CI
+name: Build test ROM
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
       - upcoming
   pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -19,7 +27,7 @@ jobs:
       UNUSED_ERROR: 1
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install binutils
         run: |
@@ -29,13 +37,23 @@ jobs:
         # gcc-arm-none-eabi is only needed for the modern build
         # as an alternative to dkP
 
-      - name: ROM
+      - name: Build ROM
         env:
           COMPARE: 0
-        run: make -j${nproc} -O all
+        run: make -j"$(nproc)" -O all
 
       - name: Test
         env:
           TEST: 1
         run: |
-          make -j${nproc} check
+          make -j"$(nproc)" check
+
+      - name: Upload test ROM
+        uses: actions/upload-artifact@v4
+        with:
+          name: emerald-imperium-test-${{ github.sha }}
+          path: |
+            pokeemerald.gba
+            pokeemerald.map
+          if-no-files-found: error
+          retention-days: 14
