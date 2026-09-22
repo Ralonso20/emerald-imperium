@@ -44,12 +44,6 @@ jobs:
           COMPARE: 0
         run: make -j"$(nproc)" -O all
 
-      - name: Test
-        env:
-          TEST: 1
-        run: |
-          make -j"$(nproc)" check
-
       - name: Upload test ROM
         uses: actions/upload-artifact@v4
         with:
@@ -59,3 +53,9 @@ jobs:
             pokeemerald.map
           if-no-files-found: error
           retention-days: 14
+
+      - name: Test
+        env:
+          TEST: 1
+        run: |
+          make -j"$(nproc)" check
