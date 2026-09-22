@@ -39,6 +39,7 @@
 #include "pokemon_jump.h"
 #include "decoration_inventory.h"
 #include "secret_base.h"
+#include "string_util.h"
 #include "player_pc.h"
 #include "field_specials.h"
 #include "berry_powder.h"
@@ -66,6 +67,7 @@ static const u16 sTestBoxSpecies[] =
 
 // Ability slot used by each test Pokemon above (0/1 regular, 2 hidden).
 static const u8 sTestBoxAbilityNums[] = { 1, 2, 2, 1, 1 };
+static const u8 sText_TestBox[] = _("TEST");
 
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
 EWRAM_DATA bool8 gEnableContestDebugging = FALSE;
@@ -227,7 +229,7 @@ static void InitTestPokemonBox(void)
 {
     u32 i;
 
-    StringCopy(GetBoxNamePtr(0), _("TEST"));
+    StringCopy(GetBoxNamePtr(0), sText_TestBox);
     for (i = 0; i < ARRAY_COUNT(sTestBoxSpecies); i++)
     {
         struct BoxPokemon *boxMon;
