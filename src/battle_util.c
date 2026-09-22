@@ -1541,6 +1541,7 @@ enum
     ENDTURN_MISTY_TERRAIN,
     ENDTURN_GRASSY_TERRAIN,
     ENDTURN_PSYCHIC_TERRAIN,
+    ENDTURN_SCORCHING_TERRAIN,
     ENDTURN_ION_DELUGE,
     ENDTURN_FAIRY_LOCK,
     ENDTURN_STATUS_HEAL,
@@ -1990,6 +1991,10 @@ u8 DoFieldEndTurnEffects(void)
             break;
         case ENDTURN_PSYCHIC_TERRAIN:
             effect = EndTurnTerrain(STATUS_FIELD_PSYCHIC_TERRAIN, B_MSG_TERRAIN_END_PSYCHIC);
+            gBattleStruct->turnCountersTracker++;
+            break;
+        case ENDTURN_SCORCHING_TERRAIN:
+            effect = EndTurnTerrain(STATUS_FIELD_SCORCHING_TERRAIN, B_MSG_TERRAIN_END_SCORCHING);
             gBattleStruct->turnCountersTracker++;
             break;
         case ENDTURN_WATER_SPORT:
@@ -4754,6 +4759,13 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 effect++;
             }
             break;
+        case ABILITY_BLAZING_SURGE:
+            if (TryChangeBattleTerrain(battler, STATUS_FIELD_SCORCHING_TERRAIN, &gFieldTimers.terrainTimer))
+            {
+                BattleScriptPushCursorAndCallback(BattleScript_BlazingSurgeActivates);
+                effect++;
+            }
+            break;
         case ABILITY_DISTORTED_SPACE:
             if (!gSpecialStatuses[battler].switchInAbilityDone
              && !(gFieldStatuses & STATUS_FIELD_TRICK_ROOM))
@@ -6698,6 +6710,7 @@ bool32 CanBeFrozen(u32 battler)
 {
     u16 ability = GetBattlerAbility(battler);
     if (IS_BATTLER_OF_TYPE(battler, TYPE_ICE)
+     || IsBattlerTerrainAffected(battler, STATUS_FIELD_SCORCHING_TERRAIN)
      || IsBattlerWeatherAffected(battler, B_WEATHER_SUN)
      || gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD
      || ability == ABILITY_MAGMA_ARMOR
@@ -6714,6 +6727,7 @@ bool32 CanGetFrostbite(u32 battler)
 {
     u16 ability = GetBattlerAbility(battler);
     if (IS_BATTLER_OF_TYPE(battler, TYPE_ICE)
+      || IsBattlerTerrainAffected(battler, STATUS_FIELD_SCORCHING_TERRAIN)
       || gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD
       || ability == ABILITY_MAGMA_ARMOR
       || ability == ABILITY_COMATOSE
@@ -8568,7 +8582,8 @@ static bool32 IsBattlerGroundedInverseCheck(u32 battler, bool32 considerInverse)
         return FALSE;
     if (holdEffect == HOLD_EFFECT_AIR_BALLOON)
         return FALSE;
-    if ((AI_DATA->aiCalcInProgress ? AI_DATA->abilities[battler] : GetBattlerAbility(battler)) == ABILITY_LEVITATE)
+    if ((AI_DATA->aiCalcInProgress ? AI_DATA->abilities[battler] : GetBattlerAbility(battler)) == ABILITY_LEVITATE
+     || (AI_DATA->aiCalcInProgress ? AI_DATA->abilities[battler] : GetBattlerAbility(battler)) == ABILITY_DESERT_WINGS)
         return FALSE;
     if (IS_BATTLER_OF_TYPE(battler, TYPE_FLYING) && (!considerInverse || !FlagGet(B_FLAG_INVERSE_BATTLE)))
         return FALSE;
@@ -9131,6 +9146,13 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         modifier = uq4_12_multiply(modifier, (B_TERRAIN_TYPE_BOOST >= GEN_8 ? UQ_4_12(1.3) : UQ_4_12(1.5)));
     if (IsBattlerTerrainAffected(battlerAtk, STATUS_FIELD_PSYCHIC_TERRAIN) && moveType == TYPE_PSYCHIC)
         modifier = uq4_12_multiply(modifier, (B_TERRAIN_TYPE_BOOST >= GEN_8 ? UQ_4_12(1.3) : UQ_4_12(1.5)));
+    if (gFieldStatuses & STATUS_FIELD_SCORCHING_TERRAIN)
+    {
+        if (moveType == TYPE_FIRE)
+            modifier = uq4_12_multiply(modifier, UQ_4_12(1.2));
+        if (moveType == TYPE_WATER && IsBattlerGrounded(battlerDef))
+            modifier = uq4_12_multiply(modifier, UQ_4_12(0.8));
+    }
 
     if (moveType == TYPE_ELECTRIC && ((gFieldStatuses & STATUS_FIELD_MUDSPORT)
     || AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, ABILITYEFFECT_MUD_SPORT, 0)))
@@ -9235,6 +9257,16 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         break;
     case ABILITY_PUNK_ROCK:
         if (gMovesInfo[move].soundMove)
+            modifier = uq4_12_multiply(modifier, UQ_4_12(1.3));
+        break;
+    case ABILITY_DESERT_WINGS:
+        if (moveType == TYPE_BUG || moveType == TYPE_FLYING)
+            modifier = uq4_12_multiply(modifier, UQ_4_12(1.2));
+        break;
+    case ABILITY_DRILLMASTER:
+        if (move == MOVE_DRILL_PECK || move == MOVE_DRILL_RUN || move == MOVE_PECK
+         || move == MOVE_HORN_ATTACK || move == MOVE_MEGAHORN
+         || move == MOVE_SMART_STRIKE || move == MOVE_POISON_JAB)
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.3));
         break;
     case ABILITY_STEELY_SPIRIT:
@@ -10521,13 +10553,13 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(u32 move, u32 mov
                 && ((abilityAtk != ABILITY_BONE_ZONE) || (abilityAtk == ABILITY_BONE_ZONE && !gMovesInfo[move].boneMove)))
     {
         modifier = UQ_4_12(0.0);
-        if (recordAbilities && defAbility == ABILITY_LEVITATE)
+        if (recordAbilities && (defAbility == ABILITY_LEVITATE || defAbility == ABILITY_DESERT_WINGS))
         {
-            gLastUsedAbility = ABILITY_LEVITATE;
+            gLastUsedAbility = defAbility;
             gMoveResultFlags |= (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE);
             gLastLandedMoves[battlerDef] = 0;
             gBattleCommunication[MISS_TYPE] = B_MSG_GROUND_MISS;
-            RecordAbilityBattle(battlerDef, ABILITY_LEVITATE);
+            RecordAbilityBattle(battlerDef, defAbility);
         }
     }
     else if (moveType == TYPE_ROCK && defAbility == ABILITY_MOUNTAINEER)
@@ -10604,7 +10636,7 @@ uq4_12_t CalcPartyMonTypeEffectivenessMultiplier(u16 move, u16 speciesDef, u16 a
         if (gSpeciesInfo[speciesDef].types[1] != gSpeciesInfo[speciesDef].types[0])
             MulByTypeEffectiveness(&modifier, move, moveType, 0, gSpeciesInfo[speciesDef].types[1], 0, FALSE);
 
-        if (moveType == TYPE_GROUND && abilityDef == ABILITY_LEVITATE && !(gFieldStatuses & STATUS_FIELD_GRAVITY))
+        if (moveType == TYPE_GROUND && (abilityDef == ABILITY_LEVITATE || abilityDef == ABILITY_DESERT_WINGS) && !(gFieldStatuses & STATUS_FIELD_GRAVITY))
             modifier = UQ_4_12(0.0);
         if (moveType == TYPE_ROCK && abilityDef == ABILITY_MOUNTAINEER)
             modifier = UQ_4_12(0.0);
@@ -10649,6 +10681,7 @@ uq4_12_t GetOverworldTypeEffectiveness(struct Pokemon *mon, u8 moveType)
          || (moveType == TYPE_FIRE     &&  abilityDef == ABILITY_FLASH_FIRE)
          || (moveType == TYPE_GRASS    &&  abilityDef == ABILITY_SAP_SIPPER)
          || (moveType == TYPE_GROUND   && (abilityDef == ABILITY_LEVITATE
+                                       ||  abilityDef == ABILITY_DESERT_WINGS
                                        ||  abilityDef == ABILITY_EARTH_EATER))
          || (moveType == TYPE_WATER    && (abilityDef == ABILITY_WATER_ABSORB
                                        || abilityDef == ABILITY_DRY_SKIN
@@ -10768,7 +10801,9 @@ bool32 CanMegaEvolve(u32 battler)
     // Check if Player has a Mega Ring.
     if (!TESTING
         && (GetBattlerPosition(battler) == B_POSITION_PLAYER_LEFT || (!(gBattleTypeFlags & BATTLE_TYPE_MULTI) && GetBattlerPosition(battler) == B_POSITION_PLAYER_RIGHT))
-        && !CheckBagHasItem(ITEM_MEGA_RING, 1))
+        && !CheckBagHasItem(ITEM_MEGA_RING, 1)
+        && StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("Test")) != 0
+        && StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("TEST")) != 0)
         return FALSE;
 
     // Check if Trainer has already Mega Evolved.
@@ -11800,7 +11835,8 @@ bool8 CanMonParticipateInSkyBattle(struct Pokemon *mon)
     u16 species = GetMonData(mon, MON_DATA_SPECIES);
     u16 monAbilityNum = GetMonData(mon, MON_DATA_ABILITY_NUM, NULL);
 
-    bool8 hasLevitateAbility = gSpeciesInfo[species].abilities[monAbilityNum] == ABILITY_LEVITATE;
+    bool8 hasLevitateAbility = gSpeciesInfo[species].abilities[monAbilityNum] == ABILITY_LEVITATE
+                            || gSpeciesInfo[species].abilities[monAbilityNum] == ABILITY_DESERT_WINGS;
     bool8 isFlyingType = gSpeciesInfo[species].types[0] == TYPE_FLYING || gSpeciesInfo[species].types[1] == TYPE_FLYING;
     bool8 monIsValidAndNotEgg = GetMonData(mon, MON_DATA_SANITY_HAS_SPECIES) && !GetMonData(mon, MON_DATA_IS_EGG);
 

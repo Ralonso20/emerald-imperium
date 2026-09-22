@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle.h"
+#include "battle_script_commands.h"
 #include "load_save.h"
 #include "battle_setup.h"
 #include "battle_transition.h"
@@ -87,6 +88,7 @@ static void CB2_EndFirstBattle(void);
 static void SaveChangesToPlayerParty(void);
 static void HandleBattleVariantEndParty(void);
 static void CB2_EndTrainerBattle(void);
+static void CB2_EndTestArenaBattle(void);
 static bool32 IsPlayerDefeated(u32 battleOutcome);
 #if FREE_MATCH_CALL == FALSE
 static u16 GetRematchTrainerId(u16 trainerId);
@@ -97,6 +99,7 @@ static const u8 *GetIntroSpeechOfApproachingTrainer(void);
 static const u8 *GetTrainerCantBattleSpeech(void);
 
 EWRAM_DATA static u16 sTrainerBattleMode = 0;
+EWRAM_DATA static u16 sTestArenaHeldItems[PARTY_SIZE] = {0};
 EWRAM_DATA u16 gTrainerBattleOpponent_A = 0;
 EWRAM_DATA u16 gTrainerBattleOpponent_B = 0;
 EWRAM_DATA u16 gPartnerTrainerId = 0;
@@ -1435,6 +1438,64 @@ void BattleSetup_StartTrainerBattle(void)
         DoTrainerBattle();
 
     ScriptContext_Stop();
+}
+
+// TEST-only sparring: use the existing boss teams without setting story trainer
+// flags, paying prize money, or sending a defeated player to a Pokemon Center.
+static const u16 sTestArenaTrainers[] =
+{
+    TRAINER_CYNTHIA,
+    TRAINER_WALLACE,
+    TRAINER_WALLACE_WITH_STEVEN,
+    TRAINER_STEVEN_WITH_WALLACE,
+    TRAINER_IRIV24,
+};
+
+void TestArena_IsTestPlayer(void)
+{
+    gSpecialVar_Result = StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("Test")) == 0
+                      || StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("TEST")) == 0;
+}
+
+void TestArena_CanBattle(void)
+{
+    TestArena_IsTestPlayer();
+    gSpecialVar_Result = gSpecialVar_Result && gPlayerPartyCount >= (gSpecialVar_0x8004 == 1 ? 2 : 1);
+}
+
+void TestArena_StartBattle(void)
+{
+    u32 i;
+
+    TestArena_IsTestPlayer();
+    if (!gSpecialVar_Result || NoAliveMonsForPlayer())
+        return;
+
+    InitTrainerBattleVariables();
+    gTrainerBattleOpponent_A = sTestArenaTrainers[Random() % ARRAY_COUNT(sTestArenaTrainers)];
+    gTrainerBattleOpponent_B = 0;
+    gNoOfApproachingTrainers = 0;
+    gBattleTypeFlags = BATTLE_TYPE_TRAINER | BATTLE_TYPE_TEST_ARENA;
+    if (gSpecialVar_0x8004 == 1 && gPlayerPartyCount >= 2)
+        gBattleTypeFlags |= BATTLE_TYPE_DOUBLE;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+        sTestArenaHeldItems[i] = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
+
+    gMain.savedCallback = CB2_EndTestArenaBattle;
+    DoTrainerBattle();
+    ScriptContext_Stop();
+}
+
+static void CB2_EndTestArenaBattle(void)
+{
+    u32 i;
+
+    HandleBattleVariantEndParty();
+    for (i = 0; i < PARTY_SIZE; i++)
+        SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &sTestArenaHeldItems[i]);
+    DowngradeBadPoison();
+    SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
 }
 
 void BattleSetup_StartTrainerBattle_Debug(void)

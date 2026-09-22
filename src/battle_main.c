@@ -1981,7 +1981,19 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
                 fixedOtId = HIHALF(personalityValue) ^ LOHALF(personalityValue);
             }
 
-            if(FlagGet(FLAG_IS_CHAMPION) && (trainerClass == TRAINER_CLASS_ELITE_FOUR || trainerClass == TRAINER_CLASS_CHAMPION))
+            if (battleTypeFlags & BATTLE_TYPE_TEST_ARENA)
+            {
+                // Match the strongest member of the player's party, including
+                // the level-50 Pokemon supplied in the TEST boxes.
+                if (!decidedLevel)
+                {
+                    maxLevel = DecideLevel();
+                    decidedLevel = TRUE;
+                }
+                CreateMon(&party[i], species, maxLevel, 0, TRUE, personalityValue, otIdType, fixedOtId);
+                SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
+            }
+            else if(FlagGet(FLAG_IS_CHAMPION) && (trainerClass == TRAINER_CLASS_ELITE_FOUR || trainerClass == TRAINER_CLASS_CHAMPION))
             {
                 CreateMon(&party[i], species, 100, 0, TRUE, personalityValue, otIdType, fixedOtId);
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
@@ -4387,7 +4399,8 @@ static void HandleTurnActionSelectionState(void)
                     }
                     break;
                 case B_ACTION_USE_ITEM:
-                    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && VarGet(VAR_GAME_SETTING_DIFFICULTY_MODE) != GAME_SETTING_DIFFICULTY_EASY_MODE)
+                    if (gBattleTypeFlags & BATTLE_TYPE_TEST_ARENA
+                     || (gBattleTypeFlags & BATTLE_TYPE_TRAINER && VarGet(VAR_GAME_SETTING_DIFFICULTY_MODE) != GAME_SETTING_DIFFICULTY_EASY_MODE))
                     {
                         RecordedBattle_ClearBattlerAction(battler, 1);
                         gSelectionBattleScripts[battler] = BattleScript_ActionSelectionItemsCantBeUsed;
@@ -5489,7 +5502,7 @@ static void HandleEndTurn_BattleWon(void)
         gBattleOutcome &= ~B_OUTCOME_LINK_BATTLE_RAN;
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER
-            && gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_TRAINER_HILL | BATTLE_TYPE_EREADER_TRAINER))
+            && gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_TRAINER_HILL | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TEST_ARENA))
     {
         BattleStopLowHpSound();
         gBattlescriptCurrInstr = BattleScript_FrontierTrainerBattleWon;

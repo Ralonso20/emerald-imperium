@@ -2039,4 +2039,66 @@ LittlerootTown_Text_BirchSomethingToShowYouAtLab:
 # 1020 "data/maps/LittlerootTown/scripts.pory"
 # 1021 "data/maps/LittlerootTown/scripts.pory"
 	.string "Let's go to my lab.$"
+
+@ The hidden sparring room is represented by the expert at the edge of town.
+@ No Battle Frontier streak, floor or reward state is touched.
+LittlerootTown_EventScript_TestArena::
+	lock
+	faceplayer
+	specialvar VAR_RESULT, TestArena_IsTestPlayer
+	goto_if_eq VAR_RESULT, 0, LittlerootTown_TestArena_Denied
+	msgbox LittlerootTown_Text_TestArenaIntro, MSGBOX_DEFAULT
+	yesnobox 20, 8
+	goto_if_ne VAR_RESULT, 0, LittlerootTown_TestArena_Leave
+	setvar VAR_0x8004, 0
+	msgbox LittlerootTown_Text_TestArenaDoubles, MSGBOX_DEFAULT
+	yesnobox 20, 8
+	goto_if_ne VAR_RESULT, 0, LittlerootTown_TestArena_CheckParty
+	setvar VAR_0x8004, 1
+LittlerootTown_TestArena_CheckParty:
+	specialvar VAR_RESULT, TestArena_CanBattle
+	goto_if_eq VAR_RESULT, 0, LittlerootTown_TestArena_NoParty
+	special HealPlayerParty
+LittlerootTown_TestArena_NextBattle:
+	special TestArena_StartBattle
+	waitstate
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_ne VAR_RESULT, B_OUTCOME_WON, LittlerootTown_TestArena_Lost
+	special HealPlayerParty
+	msgbox LittlerootTown_Text_TestArenaContinue, MSGBOX_DEFAULT
+	yesnobox 20, 8
+	goto_if_eq VAR_RESULT, 0, LittlerootTown_TestArena_NextBattle
+LittlerootTown_TestArena_Leave:
+	release
+	end
+LittlerootTown_TestArena_Lost:
+	special HealPlayerParty
+	msgbox LittlerootTown_Text_TestArenaLost, MSGBOX_DEFAULT
+	release
+	end
+LittlerootTown_TestArena_NoParty:
+	msgbox LittlerootTown_Text_TestArenaNoParty, MSGBOX_DEFAULT
+	release
+	end
+LittlerootTown_TestArena_Denied:
+	msgbox LittlerootTown_Text_TestArenaDenied, MSGBOX_DEFAULT
+	release
+	end
+
+LittlerootTown_Text_TestArenaIntro:
+	.string "TEST arena: endless battles against\n"
+	.string "powerful trainers. No Bag items or\l"
+	.string "rewards. Fight now?$"
+LittlerootTown_Text_TestArenaDoubles:
+	.string "Double battles? No selects singles.$"
+LittlerootTown_Text_TestArenaContinue:
+	.string "Your team was healed. Fight another?$"
+LittlerootTown_Text_TestArenaLost:
+	.string "Your team was healed. Come back\n"
+	.string "whenever you want another match.$"
+LittlerootTown_Text_TestArenaNoParty:
+	.string "Bring one Pokemon for singles,\n"
+	.string "or two for doubles.$"
+LittlerootTown_Text_TestArenaDenied:
+	.string "The arena opens only for TEST.$"
 `

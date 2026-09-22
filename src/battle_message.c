@@ -630,6 +630,8 @@ static const u8 sText_ScriptingAbilityRaisedStat[] = _("{B_SCR_ACTIVE_NAME_WITH_
 static const u8 sText_ElectricTerrainEnds[] = _("The electricity disappeared from the battlefield.");
 static const u8 sText_MistyTerrainEnds[] = _("The mist disappeared from the battlefield.");
 static const u8 sText_PsychicTerrainEnds[] = _("The weirdness disappeared from the battlefield!");
+static const u8 sText_ScorchingTerrainStarts[] = _("The ground blazed with heat!");
+static const u8 sText_ScorchingTerrainEnds[] = _("The scorching heat faded from the ground.");
 static const u8 sText_GrassyTerrainEnds[] = _("The grass disappeared from the battlefield.");
 static const u8 sText_TargetsStatWasMaxedOut[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} maxed its {B_BUFF1}!");
 static const u8 sText_PoisonHealHpUp[] = _("The poisoning healed {B_ATK_NAME_WITH_PREFIX2} a little bit!"); //don't think this message is displayed anymore
@@ -1469,6 +1471,8 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_ELECTRICTERRAINENDS - BATTLESTRINGS_TABLE_START] = sText_ElectricTerrainEnds,
     [STRINGID_MISTYTERRAINENDS - BATTLESTRINGS_TABLE_START] = sText_MistyTerrainEnds,
     [STRINGID_PSYCHICTERRAINENDS - BATTLESTRINGS_TABLE_START] = sText_PsychicTerrainEnds,
+    [STRINGID_SCORCHINGTERRAINSTARTS - BATTLESTRINGS_TABLE_START] = sText_ScorchingTerrainStarts,
+    [STRINGID_SCORCHINGTERRAINENDS - BATTLESTRINGS_TABLE_START] = sText_ScorchingTerrainEnds,
     [STRINGID_GRASSYTERRAINENDS - BATTLESTRINGS_TABLE_START] = sText_GrassyTerrainEnds,
     [STRINGID_TARGETABILITYSTATRAISE - BATTLESTRINGS_TABLE_START] = sText_TargetAbilityRaisedStat,
     [STRINGID_TARGETSSTATWASMAXEDOUT - BATTLESTRINGS_TABLE_START] = sText_TargetsStatWasMaxedOut,
@@ -1642,6 +1646,7 @@ const u16 gTerrainStringIds[B_MSG_TERRAIN_COUNT] =
     [B_MSG_TERRAIN_END_ELECTRIC] = STRINGID_ELECTRICTERRAINENDS,
     [B_MSG_TERRAIN_END_PSYCHIC] = STRINGID_PSYCHICTERRAINENDS,
     [B_MSG_TERRAIN_END_GRASSY] = STRINGID_GRASSYTERRAINENDS,
+    [B_MSG_TERRAIN_END_SCORCHING] = STRINGID_SCORCHINGTERRAINENDS,
 };
 
 const u16 gTerrainPreventsStringIds[] =

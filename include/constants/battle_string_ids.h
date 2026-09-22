@@ -727,8 +727,10 @@
 #define STRINGID_SEEMSWEIRD                           725
 #define STRINGID_WAGGLINGAFINGER                      726
 #define STRINGID_BLOCKEDBYSLEEPCLAUSE                 727
+#define STRINGID_SCORCHINGTERRAINSTARTS                728
+#define STRINGID_SCORCHINGTERRAINENDS                  729
 
-#define BATTLESTRINGS_COUNT                           728
+#define BATTLESTRINGS_COUNT                           730
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,
@@ -1001,7 +1003,8 @@
 #define B_MSG_TERRAIN_END_ELECTRIC  5
 #define B_MSG_TERRAIN_END_PSYCHIC   6
 #define B_MSG_TERRAIN_END_GRASSY    7
-#define B_MSG_TERRAIN_COUNT         8
+#define B_MSG_TERRAIN_END_SCORCHING 8
+#define B_MSG_TERRAIN_COUNT         9
 
 // gStartingStatusStringIds
 #define B_MSG_TERRAIN_SET_MISTY     0

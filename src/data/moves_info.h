@@ -20726,6 +20726,70 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .battleAnimScript = gBattleAnimMove_ExtremeEvoboost,
     },
 
+    [MOVE_RESONANT_STRIKE] =
+    {
+        .name = COMPOUND_STRING("Resonant Hit"),
+        .description = COMPOUND_STRING("A sonic water strike. May\nlower the target's Defense."),
+        .effect = EFFECT_HIT,
+        .power = 80,
+        .type = TYPE_WATER,
+        .accuracy = 100,
+        .pp = 10,
+        .target = MOVE_TARGET_SELECTED,
+        .category = DAMAGE_CATEGORY_PHYSICAL,
+        .soundMove = TRUE,
+        .ignoresSubstitute = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
+            .chance = 20,
+            .sheerForceBoost = SHEER_FORCE_BOOST,
+        }),
+        .battleAnimScript = gBattleAnimMove_Liquidation,
+    },
+
+    [MOVE_FLORAL_SLASH] =
+    {
+        .name = COMPOUND_STRING("Floral Slash"),
+        .description = COMPOUND_STRING("A mighty cut that lowers\nAttack and Speed."),
+        .effect = EFFECT_HIT,
+        .power = 110,
+        .type = TYPE_GRASS,
+        .accuracy = 90,
+        .pp = 5,
+        .target = MOVE_TARGET_SELECTED,
+        .category = DAMAGE_CATEGORY_PHYSICAL,
+        .makesContact = TRUE,
+        .slicingMove = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
+            .self = TRUE,
+        }, {
+            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
+            .self = TRUE,
+        }),
+        .battleAnimScript = gBattleAnimMove_LeafBlade,
+    },
+
+    [MOVE_STONE_IMPACT] =
+    {
+        .name = COMPOUND_STRING("Stone Impact"),
+        .description = COMPOUND_STRING("A reliable rock strike\nthat may confuse."),
+        .effect = EFFECT_HIT,
+        .power = 70,
+        .type = TYPE_ROCK,
+        .accuracy = 100,
+        .pp = 15,
+        .target = MOVE_TARGET_SELECTED,
+        .category = DAMAGE_CATEGORY_PHYSICAL,
+        .makesContact = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_CONFUSION,
+            .chance = 10,
+            .sheerForceBoost = SHEER_FORCE_BOOST,
+        }),
+        .battleAnimScript = gBattleAnimMove_RockSlide,
+    },
+
     // Z-Moves
     [MOVE_BREAKNECK_BLITZ] =
     {

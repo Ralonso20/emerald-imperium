@@ -3018,7 +3018,9 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
         else
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_ITEM);
         
-        if (FlagGet(FLAG_MET_REGULAR_MOVE_TUTOR))
+        if (FlagGet(FLAG_MET_REGULAR_MOVE_TUTOR)
+         || StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("Test")) == 0
+         || StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("TEST")) == 0)
         {
             u16 species = GetMonData(&mons[slotId], MON_DATA_SPECIES_OR_EGG, 0);
             bool32 hasLvlUpMove = (GetSpeciesLevelUpLearnset(species) != gSpeciesInfo[SPECIES_NONE].levelUpLearnset);

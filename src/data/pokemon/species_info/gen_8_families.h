@@ -1820,11 +1820,11 @@ const struct SpeciesInfo gSpeciesInfoGen8[] =
     [SPECIES_DREDNAW] =
     {
         .baseHP        = 90,
-        .baseAttack    = 115,
-        .baseDefense   = 90,
-        .baseSpeed     = 74,
+        .baseAttack    = 120,
+        .baseDefense   = 95,
+        .baseSpeed     = 70,
         .baseSpAttack  = 48,
-        .baseSpDefense = 68,
+        .baseSpDefense = 72,
         .types = MON_TYPES(TYPE_WATER, TYPE_ROCK),
         .catchRate = 75,
         .expYield = 170,

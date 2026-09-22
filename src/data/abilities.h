@@ -2538,6 +2538,27 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 8,
     },
 
+    [ABILITY_DESERT_WINGS] =
+    {
+        .name = _("Desert Wings"),
+        .description = COMPOUND_STRING("Evades Ground moves; boosts\nBug and Flying moves."),
+        .aiRating = 8,
+    },
+
+    [ABILITY_DRILLMASTER] =
+    {
+        .name = _("Drillmaster"),
+        .description = COMPOUND_STRING("Boosts piercing attacks\nby 30%."),
+        .aiRating = 7,
+    },
+
+    [ABILITY_BLAZING_SURGE] =
+    {
+        .name = _("Blazing Surge"),
+        .description = COMPOUND_STRING("Sets Scorching Terrain\nfor five turns."),
+        .aiRating = 8,
+    },
+
     
 
 };

@@ -6503,7 +6503,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
     #else
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_BUG),
     #endif
-        .abilities = {ABILITY_LEVITATE,  ABILITY_SPEED_BOOST,  ABILITY_TINTED_LENS },
+        .abilities = {ABILITY_DESERT_WINGS,  ABILITY_SPEED_BOOST,  ABILITY_TINTED_LENS },
         .bodyColor = BODY_COLOR_GREEN,
         .speciesName = _("Flygon"),
         .cryId = CRY_FLYGON,
@@ -6947,12 +6947,12 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
 #if P_FAMILY_SEVIPER
     [SPECIES_SEVIPER] =
     {
-        .baseHP        = 83,
-        .baseAttack    = 100,
-        .baseDefense   = 83,
-        .baseSpeed     = 85,
+        .baseHP        = 73,
+        .baseAttack    = 110,
+        .baseDefense   = 65,
+        .baseSpeed     = 65,
         .baseSpAttack  = 100,
-        .baseSpDefense = 83,
+        .baseSpDefense = 65,
         .types = MON_TYPES(TYPE_POISON),
         .catchRate = 90,
         .expYield = (P_UPDATED_EXP_YIELDS >= GEN_5) ? 160 : 165,
@@ -6964,7 +6964,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_FLUCTUATING,
         .eggGroups = MON_EGG_GROUPS(EGG_GROUP_FIELD, EGG_GROUP_DRAGON),
-        .abilities = {ABILITY_MERCILESS,  ABILITY_SHED_SKIN,  ABILITY_FATAL_PRECISION },
+        .abilities = {ABILITY_MERCILESS,  ABILITY_SHED_SKIN,  ABILITY_STRONG_JAW },
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = TRUE,
         .speciesName = _("Seviper"),
