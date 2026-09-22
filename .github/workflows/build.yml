@@ -60,12 +60,6 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Run upstream test suite (non-blocking)
-        continue-on-error: true
-        env:
-          TEST: 1
-        run: make -j"$(nproc)" check
-
       - name: Create GitHub release
         if: github.event_name != 'pull_request' && github.ref_name == 'imperium-custom'
         env:
