@@ -4090,11 +4090,11 @@ LittlerootTown_EventScript_TestArena::
 	goto_if_eq VAR_RESULT, 0, LittlerootTown_TestArena_Denied
 	msgbox LittlerootTown_Text_TestArenaIntro, MSGBOX_DEFAULT
 	yesnobox 20, 8
-	goto_if_ne VAR_RESULT, 0, LittlerootTown_TestArena_Leave
+	goto_if_eq VAR_RESULT, 0, LittlerootTown_TestArena_Leave
 	setvar VAR_0x8004, 0
 	msgbox LittlerootTown_Text_TestArenaDoubles, MSGBOX_DEFAULT
 	yesnobox 20, 8
-	goto_if_ne VAR_RESULT, 0, LittlerootTown_TestArena_CheckParty
+	goto_if_eq VAR_RESULT, 0, LittlerootTown_TestArena_CheckParty
 	setvar VAR_0x8004, 1
 LittlerootTown_TestArena_CheckParty:
 	specialvar VAR_RESULT, TestArena_CanBattle
@@ -4108,7 +4108,7 @@ LittlerootTown_TestArena_NextBattle:
 	special HealPlayerParty
 	msgbox LittlerootTown_Text_TestArenaContinue, MSGBOX_DEFAULT
 	yesnobox 20, 8
-	goto_if_eq VAR_RESULT, 0, LittlerootTown_TestArena_NextBattle
+	goto_if_eq VAR_RESULT, 1, LittlerootTown_TestArena_NextBattle
 LittlerootTown_TestArena_Leave:
 	release
 	end
