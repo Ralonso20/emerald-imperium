@@ -1088,11 +1088,11 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
     [SPECIES_LIEPARD] =
     {
         .baseHP        = 64,
-        .baseAttack    = 98,
-        .baseDefense   = 50,
+        .baseAttack    = 88,
+        .baseDefense   = 60,
         .baseSpeed     = 106,
         .baseSpAttack  = 78,
-        .baseSpDefense = 50,
+        .baseSpDefense = 60,
         .types = MON_TYPES(TYPE_DARK),
         .catchRate = 90,
         .expYield = 156,
@@ -9678,11 +9678,11 @@ const struct SpeciesInfo gSpeciesInfoGen5[] =
 #if P_FAMILY_DRUDDIGON
     [SPECIES_DRUDDIGON] =
     {
-        .baseHP        = 90,
-        .baseAttack    = 120,
+        .baseHP        = 77,
+        .baseAttack    = 130,
         .baseDefense   = 90,
-        .baseSpeed     = 41,
-        .baseSpAttack  = 60,
+        .baseSpeed     = 48,
+        .baseSpAttack  = 50,
         .baseSpDefense = 90,
         .types = MON_TYPES(TYPE_DRAGON),
         .catchRate = 45,

@@ -2559,6 +2559,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 8,
     },
 
+    [ABILITY_VERDANT_SKIN] =
+    {
+        .name = _("Verdant Skin"),
+        .description = COMPOUND_STRING("Normal moves become Grass\nand gain 20% power."),
+        .aiRating = 8,
+    },
+
     
 
 };

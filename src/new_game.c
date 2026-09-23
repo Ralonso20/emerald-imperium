@@ -56,10 +56,13 @@
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
+struct TestBoxMon;
+
 static void ClearFrontierRecord(void);
 static void WarpToTruck(void);
 static void ResetMiniGamesRecords(void);
 static void CreateTestBoxes(void);
+static void CreateTestBoxMon(struct BoxPokemon *boxMon, const struct TestBoxMon *testMon);
 
 struct TestBoxMon
 {
@@ -73,6 +76,8 @@ struct TestBoxMon
 static const u8 sText_TestName[] = _("Test");
 static const u8 sText_TestNameUpper[] = _("TEST");
 static const u8 sText_TestBox2[] = _("TEST 2");
+static const u8 sText_TestBox3[] = _("TEST 3");
+static const u8 sText_DefaultBox3[] = _("Box3");
 
 static const struct TestBoxMon sTestBoxMons[] =
 {
@@ -118,7 +123,7 @@ static const struct TestBoxMon sTestBoxMons[] =
     {SPECIES_BEEDRILL,           ITEM_LIFE_ORB,         {MOVE_POISON_JAB, MOVE_MEGAHORN, MOVE_DRILL_RUN, MOVE_SWORDS_DANCE}, 1, NATURE_JOLLY},
     {SPECIES_ESCAVALIER,         ITEM_ASSAULT_VEST,     {MOVE_MEGAHORN, MOVE_SMART_STRIKE, MOVE_KNOCK_OFF, MOVE_DRILL_RUN}, 1, NATURE_ADAMANT},
     {SPECIES_MAGCARGO,           ITEM_LEFTOVERS,        {MOVE_FLAMETHROWER, MOVE_EARTH_POWER, MOVE_RECOVER, MOVE_WILL_O_WISP}, 2, NATURE_BOLD},
-    {SPECIES_ARCANINE_HISUI,     ITEM_LIFE_ORB,         {MOVE_FLARE_BLITZ, MOVE_HEAD_SMASH, MOVE_EXTREME_SPEED, MOVE_WILD_CHARGE}, 1, NATURE_JOLLY},
+    {SPECIES_ARCANINE_HISUI,     ITEM_LIFE_ORB,         {MOVE_FLARE_BLITZ, MOVE_HEAD_SMASH, MOVE_EXTREME_SPEED, MOVE_WILD_CHARGE}, 2, NATURE_JOLLY},
     {SPECIES_WEAVILE,            ITEM_LIFE_ORB,         {MOVE_FAKE_OUT, MOVE_KNOCK_OFF, MOVE_ICE_SHARD, MOVE_TRIPLE_AXEL}, 2, NATURE_JOLLY},
     {SPECIES_PRIMARINA,          ITEM_THROAT_SPRAY,     {MOVE_HYPER_VOICE, MOVE_MOONBLAST, MOVE_PSYCHIC, MOVE_ICE_BEAM}, 2, NATURE_MODEST},
     {SPECIES_SLAKING,            ITEM_LIFE_ORB,         {MOVE_DOUBLE_EDGE, MOVE_EARTHQUAKE, MOVE_KNOCK_OFF, MOVE_SLACK_OFF}, 0, NATURE_JOLLY},
@@ -130,6 +135,23 @@ static const struct TestBoxMon sTestBoxMons[] =
     {SPECIES_ROTOM_FROST,        ITEM_HEAVY_DUTY_BOOTS, {MOVE_BLIZZARD, MOVE_FREEZE_DRY, MOVE_VOLT_SWITCH, MOVE_NASTY_PLOT}, 0, NATURE_TIMID},
     {SPECIES_ROTOM_MOW,          ITEM_CHOICE_SPECS,     {MOVE_LEAF_STORM, MOVE_GIGA_DRAIN, MOVE_VOLT_SWITCH, MOVE_THUNDERBOLT}, 0, NATURE_TIMID},
     {SPECIES_ROTOM_FAN,          ITEM_HEAVY_DUTY_BOOTS, {MOVE_HURRICANE, MOVE_AIR_SLASH, MOVE_VOLT_SWITCH, MOVE_THUNDER_WAVE}, 0, NATURE_TIMID},
+    {SPECIES_DRAPION,            ITEM_LIFE_ORB,         {MOVE_POISON_JAB, MOVE_KNOCK_OFF, MOVE_EARTHQUAKE, MOVE_SWORDS_DANCE}, 1, NATURE_JOLLY},
+    {SPECIES_LIEPARD,            ITEM_FOCUS_SASH,       {MOVE_KNOCK_OFF, MOVE_SUCKER_PUNCH, MOVE_TAUNT, MOVE_THUNDER_WAVE}, 2, NATURE_JOLLY},
+    {SPECIES_DRUDDIGON,          ITEM_LIFE_ORB,         {MOVE_DRAGON_RUSH, MOVE_IRON_HEAD, MOVE_FIRE_PUNCH, MOVE_ROCK_SLIDE}, 1, NATURE_BRAVE},
+    {SPECIES_SANDSLASH,          ITEM_LIFE_ORB,         {MOVE_EARTHQUAKE, MOVE_STONE_IMPACT, MOVE_SWORDS_DANCE, MOVE_RAPID_SPIN}, 2, NATURE_JOLLY},
+    {SPECIES_SANDSLASH_ALOLA,    ITEM_LIFE_ORB,         {MOVE_EARTHQUAKE, MOVE_ICICLE_CRASH, MOVE_IRON_HEAD, MOVE_SWORDS_DANCE}, 0, NATURE_JOLLY},
+    {SPECIES_RAPIDASH,           ITEM_LIFE_ORB,         {MOVE_FLARE_BLITZ, MOVE_WILD_CHARGE, MOVE_DOUBLE_EDGE, MOVE_MORNING_SUN}, 0, NATURE_JOLLY},
+    {SPECIES_RAPIDASH_GALAR,     ITEM_LIFE_ORB,         {MOVE_PLAY_ROUGH, MOVE_MEGAHORN, MOVE_PSYCHO_CUT, MOVE_SWORDS_DANCE}, 0, NATURE_JOLLY},
+    {SPECIES_ELECTRODE,          ITEM_THROAT_SPRAY,     {MOVE_HYPER_VOICE, MOVE_THUNDERBOLT, MOVE_VOLT_SWITCH, MOVE_LIGHT_SCREEN}, 2, NATURE_TIMID},
+    {SPECIES_ELECTRODE_HISUI,    ITEM_THROAT_SPRAY,     {MOVE_HYPER_VOICE, MOVE_THUNDERBOLT, MOVE_VOLT_SWITCH, MOVE_GIGA_DRAIN}, 2, NATURE_TIMID},
+    {SPECIES_EXPLOUD,            ITEM_THROAT_SPRAY,     {MOVE_BOOMBURST, MOVE_HYPER_VOICE, MOVE_FLAMETHROWER, MOVE_SURF}, 2, NATURE_MODEST},
+    {SPECIES_AGGRON,             ITEM_LIFE_ORB,         {MOVE_STONE_IMPACT, MOVE_IRON_HEAD, MOVE_FIRE_PUNCH, MOVE_DRAGON_DANCE}, 2, NATURE_ADAMANT},
+    {SPECIES_MANECTRIC,          ITEM_LIFE_ORB,         {MOVE_THUNDERBOLT, MOVE_GRASS_KNOT, MOVE_VOLT_SWITCH, MOVE_FLAMETHROWER}, 0, NATURE_TIMID},
+    {SPECIES_KROOKODILE,         ITEM_LIFE_ORB,         {MOVE_EARTHQUAKE, MOVE_KNOCK_OFF, MOVE_STONE_IMPACT, MOVE_DRAGON_DANCE}, 0, NATURE_JOLLY},
+    {SPECIES_ARCHEOPS,           ITEM_FOCUS_SASH,       {MOVE_ACROBATICS, MOVE_STONE_EDGE, MOVE_EARTHQUAKE, MOVE_U_TURN}, 0, NATURE_JOLLY},
+    {SPECIES_TALONFLAME,         ITEM_HEAVY_DUTY_BOOTS, {MOVE_BRAVE_BIRD, MOVE_FLARE_BLITZ, MOVE_ROOST, MOVE_U_TURN}, 2, NATURE_JOLLY},
+    {SPECIES_AVALUGG,            ITEM_LEFTOVERS,        {MOVE_BODY_PRESS, MOVE_HEAVY_SLAM, MOVE_AVALANCHE, MOVE_RECOVER}, 2, NATURE_IMPISH},
+    {SPECIES_DECIDUEYE,          ITEM_LIFE_ORB,         {MOVE_SPIRIT_SHACKLE, MOVE_SEED_BOMB, MOVE_BULLET_SEED, MOVE_SHADOW_BALL}, 2, NATURE_ADAMANT},
 };
 
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
@@ -262,6 +284,9 @@ void NewGameInitData(void)
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
     CreateTestBoxes();
+    if (StringCompare(gSaveBlock2Ptr->playerName, sText_TestName) == 0
+     || StringCompare(gSaveBlock2Ptr->playerName, sText_TestNameUpper) == 0)
+        VarSet(VAR_TEST_BOX_VERSION, 1);
     DeactivateAllRoamers();
     ClearBag();
     if (StringCompare(gSaveBlock2Ptr->playerName, sText_TestName) == 0
@@ -307,30 +332,166 @@ static void CreateTestBoxes(void)
 
     StringCopy(gPokemonStoragePtr->boxNames[0], sText_TestNameUpper);
     StringCopy(gPokemonStoragePtr->boxNames[1], sText_TestBox2);
+    StringCopy(gPokemonStoragePtr->boxNames[2], sText_TestBox3);
+
+    for (i = 0; i < ARRAY_COUNT(sTestBoxMons); i++)
+        CreateTestBoxMon(&gPokemonStoragePtr->boxes[i / IN_BOX_COUNT][i % IN_BOX_COUNT], &sTestBoxMons[i]);
+}
+
+static void CreateTestBoxMon(struct BoxPokemon *boxMon, const struct TestBoxMon *testMon)
+{
+    u32 value;
+    u32 j;
+
+    CreateBoxMon(boxMon, testMon->species, 50, MAX_PER_STAT_IVS, TRUE, testMon->nature, OT_ID_PLAYER_ID, 0);
+    value = testMon->item;
+    SetBoxMonData(boxMon, MON_DATA_HELD_ITEM, &value);
+    value = testMon->abilityNum;
+    SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);
+
+    for (j = 0; j < MAX_MON_MOVES; j++)
+    {
+        value = testMon->moves[j];
+        SetBoxMonData(boxMon, MON_DATA_MOVE1 + j, &value);
+        value = gMovesInfo[testMon->moves[j]].pp;
+        SetBoxMonData(boxMon, MON_DATA_PP1 + j, &value);
+    }
+}
+
+static bool32 IsNewTestBoxSpecies(u32 species)
+{
+    switch (species)
+    {
+    case SPECIES_ARBOK:
+    case SPECIES_DREDNAW:
+    case SPECIES_SEVIPER:
+    case SPECIES_SEISMITOAD:
+    case SPECIES_LURANTIS:
+    case SPECIES_FEAROW:
+    case SPECIES_BEEDRILL:
+    case SPECIES_ESCAVALIER:
+    case SPECIES_MAGCARGO:
+    case SPECIES_ARCANINE_HISUI:
+    case SPECIES_PRIMARINA:
+    case SPECIES_SLAKING:
+    case SPECIES_DRAPION:
+    case SPECIES_LIEPARD:
+    case SPECIES_DRUDDIGON:
+    case SPECIES_SANDSLASH:
+    case SPECIES_SANDSLASH_ALOLA:
+    case SPECIES_RAPIDASH:
+    case SPECIES_RAPIDASH_GALAR:
+    case SPECIES_ELECTRODE:
+    case SPECIES_ELECTRODE_HISUI:
+    case SPECIES_EXPLOUD:
+    case SPECIES_AGGRON:
+    case SPECIES_MANECTRIC:
+    case SPECIES_KROOKODILE:
+    case SPECIES_ARCHEOPS:
+    case SPECIES_TALONFLAME:
+    case SPECIES_AVALUGG:
+    case SPECIES_DECIDUEYE:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
+
+// Only fill vacant slots in the original TEST boxes. Keep all other stored
+// Pokemon, including their custom moves and held items, untouched.
+void UpdateTestBoxesForExistingSave(void)
+{
+    u32 box, slot, i;
+    bool32 complete = TRUE;
+    bool32 canUseThirdBox = FALSE;
+
+    if ((StringCompare(gSaveBlock2Ptr->playerName, sText_TestName) != 0
+      && StringCompare(gSaveBlock2Ptr->playerName, sText_TestNameUpper) != 0)
+     || VarGet(VAR_TEST_BOX_VERSION) >= 1
+     || StringCompare(gPokemonStoragePtr->boxNames[0], sText_TestNameUpper) != 0
+     || StringCompare(gPokemonStoragePtr->boxNames[1], sText_TestBox2) != 0)
+        return;
+
+    if (StringCompare(gPokemonStoragePtr->boxNames[2], sText_TestBox3) == 0)
+        canUseThirdBox = TRUE;
+    else if (StringCompare(gPokemonStoragePtr->boxNames[2], sText_DefaultBox3) == 0)
+    {
+        canUseThirdBox = TRUE;
+        for (slot = 0; slot < IN_BOX_COUNT; slot++)
+            if (GetBoxMonData(&gPokemonStoragePtr->boxes[2][slot], MON_DATA_SANITY_HAS_SPECIES))
+                canUseThirdBox = FALSE;
+        if (canUseThirdBox)
+            StringCopy(gPokemonStoragePtr->boxNames[2], sText_TestBox3);
+    }
+
+    for (box = 0; box < 2; box++)
+    {
+        for (slot = 0; slot < IN_BOX_COUNT; slot++)
+        {
+            struct BoxPokemon *mon = &gPokemonStoragePtr->boxes[box][slot];
+            u32 species = GetBoxMonData(mon, MON_DATA_SPECIES);
+            u32 value;
+
+            if (species == SPECIES_ALTARIA && GetBoxMonData(mon, MON_DATA_HELD_ITEM) == ITEM_THROAT_SPRAY)
+            {
+                value = ITEM_ALTARIANITE;
+                SetBoxMonData(mon, MON_DATA_HELD_ITEM, &value);
+            }
+            else if (species == SPECIES_FLYGON
+                  && GetBoxMonData(mon, MON_DATA_HELD_ITEM) == ITEM_LIFE_ORB
+                  && GetBoxMonData(mon, MON_DATA_ABILITY_NUM) == 1)
+            {
+                value = 0;
+                SetBoxMonData(mon, MON_DATA_ABILITY_NUM, &value);
+            }
+            else if (species == SPECIES_WEAVILE && GetBoxMonData(mon, MON_DATA_MOVE4) == MOVE_LOW_KICK)
+            {
+                value = MOVE_FAKE_OUT;
+                SetBoxMonData(mon, MON_DATA_MOVE4, &value);
+                value = gMovesInfo[MOVE_FAKE_OUT].pp;
+                SetBoxMonData(mon, MON_DATA_PP4, &value);
+            }
+            else if (species == SPECIES_ARCANINE_HISUI
+                  && GetBoxMonData(mon, MON_DATA_HELD_ITEM) == ITEM_LIFE_ORB
+                  && GetBoxMonData(mon, MON_DATA_ABILITY_NUM) == 1)
+            {
+                value = 2;
+                SetBoxMonData(mon, MON_DATA_ABILITY_NUM, &value);
+            }
+        }
+    }
 
     for (i = 0; i < ARRAY_COUNT(sTestBoxMons); i++)
     {
-        const struct TestBoxMon *testMon = &sTestBoxMons[i];
-        struct BoxPokemon *boxMon = &gPokemonStoragePtr->boxes[i / IN_BOX_COUNT][i % IN_BOX_COUNT];
-        u32 personality = testMon->nature;
-        u32 value;
-        u32 j;
+        bool32 found = FALSE;
+        if (!IsNewTestBoxSpecies(sTestBoxMons[i].species))
+            continue;
 
-        CreateBoxMon(boxMon, testMon->species, 50, MAX_PER_STAT_IVS, TRUE, personality, OT_ID_PLAYER_ID, 0);
+        for (box = 0; box < (canUseThirdBox ? 3 : 2) && !found; box++)
+            for (slot = 0; slot < IN_BOX_COUNT; slot++)
+                if (GetBoxMonData(&gPokemonStoragePtr->boxes[box][slot], MON_DATA_SPECIES) == sTestBoxMons[i].species)
+                {
+                    found = TRUE;
+                    break;
+                }
 
-        value = testMon->item;
-        SetBoxMonData(boxMon, MON_DATA_HELD_ITEM, &value);
-        value = testMon->abilityNum;
-        SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);
-
-        for (j = 0; j < MAX_MON_MOVES; j++)
+        if (!found)
         {
-            value = testMon->moves[j];
-            SetBoxMonData(boxMon, MON_DATA_MOVE1 + j, &value);
-            value = gMovesInfo[testMon->moves[j]].pp;
-            SetBoxMonData(boxMon, MON_DATA_PP1 + j, &value);
+            for (box = 0; box < (canUseThirdBox ? 3 : 2) && !found; box++)
+                for (slot = 0; slot < IN_BOX_COUNT; slot++)
+                    if (!GetBoxMonData(&gPokemonStoragePtr->boxes[box][slot], MON_DATA_SANITY_HAS_SPECIES))
+                    {
+                        CreateTestBoxMon(&gPokemonStoragePtr->boxes[box][slot], &sTestBoxMons[i]);
+                        found = TRUE;
+                        break;
+                    }
+            if (!found)
+                complete = FALSE;
         }
     }
+
+    if (complete)
+        VarSet(VAR_TEST_BOX_VERSION, 1);
 }
 
 static void ResetMiniGamesRecords(void)

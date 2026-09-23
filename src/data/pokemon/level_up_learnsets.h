@@ -2100,6 +2100,7 @@ static const struct LevelUpMove sVoltorbLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sElectrodeLevelUpLearnset[] = {
+	LEVEL_UP_MOVE( 1, MOVE_HYPER_VOICE),
 	LEVEL_UP_MOVE( 1, MOVE_MAGNETIC_FLUX),
 	LEVEL_UP_MOVE( 1, MOVE_CHARGE),
 	LEVEL_UP_MOVE( 1, MOVE_TACKLE),
@@ -6407,6 +6408,7 @@ static const struct LevelUpMove sElectrikeLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sManectricLevelUpLearnset[] = {
+	LEVEL_UP_MOVE( 1, MOVE_GRASS_KNOT),
 	LEVEL_UP_MOVE( 1, MOVE_ELECTRIC_TERRAIN),
 	LEVEL_UP_MOVE( 1, MOVE_FIRE_FANG),
 	LEVEL_UP_MOVE( 1, MOVE_TACKLE),
@@ -7413,6 +7415,7 @@ static const struct LevelUpMove sLaironLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sAggronLevelUpLearnset[] = {
+	LEVEL_UP_MOVE( 1, MOVE_DRAGON_DANCE),
 	LEVEL_UP_MOVE( 1, MOVE_STONE_IMPACT),
 	LEVEL_UP_MOVE( 1, MOVE_TACKLE),
 	LEVEL_UP_MOVE( 1, MOVE_HARDEN),
@@ -11438,6 +11441,7 @@ static const struct LevelUpMove sKrokorokLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sKrookodileLevelUpLearnset[] = {
+	LEVEL_UP_MOVE( 1, MOVE_DRAGON_DANCE),
 	LEVEL_UP_MOVE( 1, MOVE_STONE_IMPACT),
 	LEVEL_UP_MOVE( 1, MOVE_POWER_TRIP),
 	LEVEL_UP_MOVE( 1, MOVE_LEER),
@@ -12896,6 +12900,13 @@ static const struct LevelUpMove sMienshaoLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sDruddigonLevelUpLearnset[] = {
+	LEVEL_UP_MOVE( 1, MOVE_DRAGON_RUSH),
+	LEVEL_UP_MOVE( 1, MOVE_BREAKING_SWIPE),
+	LEVEL_UP_MOVE( 1, MOVE_IRON_HEAD),
+	LEVEL_UP_MOVE( 1, MOVE_ROCK_SLIDE),
+	LEVEL_UP_MOVE( 1, MOVE_POISON_JAB),
+	LEVEL_UP_MOVE( 1, MOVE_FIRE_PUNCH),
+	LEVEL_UP_MOVE( 1, MOVE_THUNDER_PUNCH),
 	LEVEL_UP_MOVE( 1, MOVE_LEER),
 	LEVEL_UP_MOVE( 1, MOVE_SCRATCH),
 	LEVEL_UP_MOVE( 9, MOVE_BITE),
@@ -14931,6 +14942,10 @@ static const struct LevelUpMove sBergmiteLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sAvaluggLevelUpLearnset[] = {
+	LEVEL_UP_MOVE( 1, MOVE_BODY_PRESS),
+	LEVEL_UP_MOVE( 1, MOVE_HEAVY_SLAM),
+	LEVEL_UP_MOVE( 1, MOVE_EARTHQUAKE),
+	LEVEL_UP_MOVE( 1, MOVE_ROCK_SLIDE),
 	LEVEL_UP_MOVE( 0, MOVE_ICICLE_CRASH),
 	LEVEL_UP_MOVE( 1, MOVE_ICICLE_CRASH),
 	LEVEL_UP_MOVE( 1, MOVE_WIDE_GUARD),
@@ -16942,6 +16957,7 @@ static const struct LevelUpMove sSandshrewAlolaLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sSandslashAlolaLevelUpLearnset[] = {
+	LEVEL_UP_MOVE( 1, MOVE_EARTHQUAKE),
 	LEVEL_UP_MOVE( 0, MOVE_ICICLE_SPEAR),
 	LEVEL_UP_MOVE( 1, MOVE_ICICLE_SPEAR),
 	LEVEL_UP_MOVE( 1, MOVE_METAL_BURST),
@@ -19832,6 +19848,7 @@ static const struct LevelUpMove sVoltorbHisuiLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sElectrodeHisuiLevelUpLearnset[] = {
+	LEVEL_UP_MOVE( 1, MOVE_HYPER_VOICE),
 	LEVEL_UP_MOVE( 1, MOVE_CHARGE),
 	LEVEL_UP_MOVE( 1, MOVE_TACKLE),
 	LEVEL_UP_MOVE( 1, MOVE_THUNDER_SHOCK),

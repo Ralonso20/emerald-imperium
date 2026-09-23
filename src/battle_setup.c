@@ -1451,24 +1451,22 @@ static const u16 sTestArenaTrainers[] =
     TRAINER_IRIV24,
 };
 
-void TestArena_IsTestPlayer(void)
+u16 TestArena_IsTestPlayer(void)
 {
-    gSpecialVar_Result = StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("Test")) == 0
-                      || StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("TEST")) == 0;
+    return StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("Test")) == 0
+        || StringCompare(gSaveBlock2Ptr->playerName, COMPOUND_STRING("TEST")) == 0;
 }
 
-void TestArena_CanBattle(void)
+u16 TestArena_CanBattle(void)
 {
-    TestArena_IsTestPlayer();
-    gSpecialVar_Result = gSpecialVar_Result && gPlayerPartyCount >= (gSpecialVar_0x8004 == 1 ? 2 : 1);
+    return TestArena_IsTestPlayer() && gPlayerPartyCount >= (gSpecialVar_0x8004 == 1 ? 2 : 1);
 }
 
 void TestArena_StartBattle(void)
 {
     u32 i;
 
-    TestArena_IsTestPlayer();
-    if (!gSpecialVar_Result || NoAliveMonsForPlayer())
+    if (!TestArena_IsTestPlayer() || NoAliveMonsForPlayer())
         return;
 
     InitTrainerBattleVariables();

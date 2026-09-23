@@ -4939,7 +4939,7 @@ s8 GetMovePriority(u32 battler, u16 move)
         return gMovesInfo[MOVE_MAX_GUARD].priority;
 
     if (ability == ABILITY_GALE_WINGS
-        && (B_GALE_WINGS < GEN_7 || BATTLER_MAX_HP(battler))
+        && gBattleMons[battler].hp * 2 >= gBattleMons[battler].maxHP
         && gMovesInfo[move].type == TYPE_FLYING)
     {
         priority++;
@@ -5914,6 +5914,9 @@ bool32 TrySetAteType(u32 move, u32 battlerAtk, u32 attackerAbility)
     case ABILITY_FLAREATE:
         ateType = TYPE_FIRE;
         break;
+    case ABILITY_VERDANT_SKIN:
+        ateType = TYPE_GRASS;
+        break;
     default:
         ateType = TYPE_NONE;
         break;
@@ -6138,6 +6141,17 @@ u32 GetDynamicMoveType(struct Pokemon *mon, u32 move, u32 battler, u8 *ateBoost)
     {
         if (gMain.inBattle && ateBoost != NULL)
             *ateBoost = TRUE;
+        // CheckDynamicMoveType also feeds the move icons in the party/summary
+        // screens, where TrySetAteType cannot access an active battler.
+        switch (ability)
+        {
+        case ABILITY_PIXILATE:      return TYPE_FAIRY;
+        case ABILITY_REFRIGERATE:   return TYPE_ICE;
+        case ABILITY_AERILATE:      return TYPE_FLYING;
+        case ABILITY_GALVANIZE:    return TYPE_ELECTRIC;
+        case ABILITY_FLAREATE:      return TYPE_FIRE;
+        case ABILITY_VERDANT_SKIN:  return TYPE_GRASS;
+        }
     }
     else if (moveType != TYPE_NORMAL
           && moveEffect != EFFECT_HIDDEN_POWER

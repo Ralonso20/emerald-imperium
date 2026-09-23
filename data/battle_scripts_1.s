@@ -8147,6 +8147,7 @@ BattleScript_BlazingSurgeActivates::
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_SCORCHINGTERRAINSTARTS
 	waitmessage B_WAIT_TIME_LONG
+	playanimation BS_BATTLER_0, B_ANIM_SUN_CONTINUES
 	call BattleScript_ActivateTerrainEffects
 	end3
 
